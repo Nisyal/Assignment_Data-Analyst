@@ -7,12 +7,13 @@ This repository contains an end-to-end data analysis project investigating how B
 2. [Methodology](#2-methodology)
 3. [Data Preparation](#3-data-preparation)
 4. [Features Engineered](#4-features-engineered)
-5. [Exploratory Data Analysis (EDA)](#5-exploratory-data-analysis)
-6. [Key Findings & Analytical Insights](#6-key-findings--analytical-insights)
-7. [Trader Segmentation](#7-trader-segmentation)
-8. [Actionable Recommendations](#8-actionable-recommendations)
-9. [Limitations](#9-limitations)
-10. [Conclusion](#10-conclusion)
+5. [Libraries Used](#5-libraries-used)
+6. [Exploratory Data Analysis (EDA)](#6-exploratory-data-analysis-eda)
+7. [Key Findings & Analytical Insights](#7-key-findings--analytical-insights)
+8. [Trader Segmentation](#8-trader-segmentation)
+9. [Actionable Recommendations](#9-actionable-recommendations)
+10. [Limitations](#10-limitations)
+11. [Conclusion](#11-conclusion)
 
 ---
 
@@ -27,7 +28,7 @@ The analytical pipeline was executed through the following stages:
 4.  **Daily Date Alignment:** Extracted calendar dates to align both datasets.
 5.  **Dataset Merging:** Joined the execution logs and sentiment records on daily dates.
 6.  **Feature Engineering:** Calculated trader performance indicators (daily PnL, win rates, trade sizing).
-7.  **Exploratory Data Analysis (EDA):** Analyzed trading behaviors across sentiment categories and distributions.
+7.  **Exploratory Analysis (EDA):** Analyzed trading behaviors across sentiment categories and distributions.
 8.  **Trader Segmentation:** Grouped traders by activity and profitability to isolate behavior.
 9.  **Visualization:** Plotted key performance metrics across sentiment regimes.
 10. **Business Recommendations:** Extracted actionable insights for platform risk and portfolio management.
@@ -36,7 +37,7 @@ The analytical pipeline was executed through the following stages:
 To ensure statistical integrity, the raw data underwent rigorous cleaning:
 *   **Quality Checks:** Checked for duplicate records and verified column data types. Missing values were checked across both datasets.
 *   **Timestamp Standardization:** The original `Timestamp` column contained incorrect epoch values. `Timestamp IST` was successfully converted to standard datetime format to represent true transaction times.
-*   **Dataset Joining:** Daily dates were extracted from timestamps to serve as the join key. Merging the datasets yielded only 6 records with missing sentiment data, which was negligible and excluded from final calculations.
+*   **Dataset Joining:** Daily dates were extracted from timestamps to serve as the join key. Merging the datasets yielded only 6 records with missing sentiment data, which was deemed negligible and excluded from final calculations.
 
 ### 4. Features Engineered
 The following metrics were engineered to capture trading behaviors under varying sentiment regimes:
@@ -47,7 +48,14 @@ The following metrics were engineered to capture trading behaviors under varying
 *   **Long vs. Short Ratio:** Ratio of long to short trades to assess directional bias.
 *   *Note: Leverage analysis was omitted as leverage data was not available in the provided dataset.*
 
-### 5. Exploratory Data Analysis
+### 5. Libraries Used
+The analysis and reporting were built using standard Python data science and document generation libraries:
+*   **Pandas:** For data manipulation, handling missing values, timestamp conversion, date alignment, and dataset merging.
+*   **Matplotlib & Seaborn:** For exploratory data analysis (EDA), plotting distributions, and visualizing trader metrics by sentiment category.
+*   **FPDF2 (pyfpdf):** For programmatically generating the professional, single-page PDF report.
+*   **Google Colab (Optional):** Used as the cloud runtime environment for interactive execution of the Jupyter Notebook.
+
+### 6. Exploratory Data Analysis (EDA)
 Performance was evaluated across five market sentiment regimes: **Extreme Fear**, **Fear**, **Neutral**, **Greed**, and **Extreme Greed**. The following charts were created to evaluate trading dynamics:
 *   Average Closed PnL by Market Sentiment
 *   Win Rate by Market Sentiment
@@ -56,7 +64,7 @@ Performance was evaluated across five market sentiment regimes: **Extreme Fear**
 *   Long vs. Short Bias
 *   Closed PnL Distribution (Boxplot)
 
-### 6. Key Findings & Analytical Insights
+### 7. Key Findings & Analytical Insights
 
 #### Summary Statistics:
 
@@ -73,21 +81,21 @@ Performance was evaluated across five market sentiment regimes: **Extreme Fear**
 2.  **Extreme Greed Over-Trading & Dilution:** The "Extreme Greed" regime yielded the highest Mean PnL ($67.89) and the highest Win Rate (46.49%), yet it had the lowest Average Trade Size ($3,112.25). This indicates that while momentum-driven rising markets make it easier to win trades, traders suffer from FOMO, over-diversifying and splitting their capital into smaller, fragmented, and less efficient positions.
 3.  **Capital Erosion in Neutral and Extreme Fear Regimes:** "Neutral" and "Extreme Fear" represent high-risk, low-reward regimes. Neutral markets exhibit the lowest Mean PnL ($34.31), reflecting directionless churn. Extreme Fear shows the lowest Win Rate (37.06%) and low Mean PnL ($34.54), resulting in a dismal Total PnL ($739,110.25). This highlights that large average trade sizes ($5,349.73) in panicking markets lead to significant capital destruction without corresponding payoffs.
 
-### 7. Trader Segmentation
+### 8. Trader Segmentation
 Traders were categorized along two behavioral dimensions:
 *   **Frequent vs. Infrequent Traders:** Identifies if trading frequency correlates with profitability or if high-volume traders over-trade during greed.
 *   **Consistent Winners vs. Other Traders:** Isolates the top-performing cohort to analyze whether their success is driven by superior risk management (e.g., scaling down in Neutral/Extreme Fear) compared to average traders.
 *Segmenting behavior helps differentiate systemic market-driven performance from individual trading skill and style.*
 
-### 8. Actionable Recommendations
+### 9. Actionable Recommendations
 *   **Capitalize on Conviction in Fear and Extreme Greed:** Focus capital allocation on high-probability setups during "Fear" (for large, high-conviction discount plays) and "Extreme Greed" (to ride strong momentum), while maintaining strict profit-taking rules during greed.
 *   **Enforce Risk De-escalation in Neutral and Extreme Fear:** Programmatically reduce exposure (e.g., lower position limits and tighter stop-losses) when the sentiment index is Neutral or Extreme Fear, as these regimes exhibit poor win rates and high capital erosion.
 *   **Implement Systematic Position-Sizing Rules:** Position sizes should be dynamically adjusted based on historical regime profitability (larger in Fear/Greed, smaller in Extreme Greed/Extreme Fear) rather than emotional impulse or market FOMO.
 
-### 9. Limitations
+### 10. Limitations
 *   **Absence of Leverage Metrics:** Leverage details were not present in the dataset, preventing analysis of liquidations or true risk-adjusted returns.
 *   **Drawdown Approximation:** Portfolio equity history was unavailable, meaning drawdowns and maximum risk-exposure metrics are only estimates.
 *   **Historical Generalizability:** The findings reflect historical correlations that may shift under changing macroeconomic conditions or structural market changes.
 
-### 10. Conclusion
+### 11. Conclusion
 This project demonstrates that Bitcoin market sentiment is a powerful leading indicator of trader behavior and performance. By quantifying how emotional extremes affect trade sizing and win rates, traders and risk managers can build objective, sentiment-based frameworks to optimize position sizing, manage platform risk, and avoid the cognitive biases that typically lead to retail capital erosion.
